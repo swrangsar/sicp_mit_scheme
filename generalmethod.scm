@@ -43,3 +43,21 @@
 (define (golden-ratio)
   (fixed-point (lambda (y) (average y (+ 1 (/ 1 y))))
 	       1.0))
+
+(define (cont-frac n d k)
+  (define (iter k result)
+    (if (= k 0)
+	result
+	(iter (- k 1)
+	      (/ (n k)
+		 (+ (d k) result)))))
+  (iter k 0))
+
+(define (cont-frac n d k)
+  (define (recur i)
+    (if (> i k)
+	0
+	(/ (n i)
+	   (+ (d i)
+	      (recur (+ i 1))))))
+  (recur 1))
