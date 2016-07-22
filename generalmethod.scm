@@ -37,3 +37,7 @@
 	  next
 	  (try next))))
   (try first-guess))
+
+(define (golden-ratio)
+  (fixed-point (lambda (y) (average y (+ 1 (/ 1 y))))
+	       1.0))
