@@ -40,9 +40,9 @@
 	  (try next))))
   (try first-guess))
 
-(define (golden-ratio)
-  (fixed-point (lambda (y) (average y (+ 1 (/ 1 y))))
-	       1.0))
+;;; (define (golden-ratio)
+;;;  (fixed-point (lambda (y) (average y (+ 1 (/ 1 y))))
+;;;	       1.0))
 
 (define (cont-frac n d k)
   (define (iter k result)
@@ -53,9 +53,9 @@
 		 (+ (d k) result)))))
   (iter k 0))
 
-(cont-frac (lambda (i) 1.0)
-	   (lambda (i) 1.0)
-	   11)
+;;; (cont-frac (lambda (i) 1.0)
+;;;	       (lambda (i) 1.0)
+;;;	        11)
 
 (define (cont-frac n d k)
   (define (recur i)
@@ -66,3 +66,21 @@
 	      (recur (+ i 1))))))
   (recur 1))
 
+(define (euler-cont-frac n)
+  (define (denom k)
+    (let ((m (- k 2)))
+      (cond ((< k 3) k)
+	    ((= (remainder m 3) 0) (* 2 (+ 1 (/ m 3))))
+	    (else 1))))
+  (cont-frac (lambda (i) 1.0)
+	     denom
+	     n))
+
+;;; (euler-cont-frac 9)
+
+(define (tan-cf x k)
+  (let ((neg-sq (- 0 (square x))))
+    (/ x
+       (+ 1 (cont-frac (lambda (i) neg-sq)
+		       (lambda (i) (+ (* 2 i) 1))
+		       k)))))
