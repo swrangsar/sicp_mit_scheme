@@ -16,6 +16,6 @@
        (simpson-iter 0 a h)))
   (simpson-sum (/ (- b a) n)))
 
-(define (even? n)
-  (= (remainder n 2) 0))
 (define (cube x) (* x x x))
+(define (inc n) (+ n 1))
+
