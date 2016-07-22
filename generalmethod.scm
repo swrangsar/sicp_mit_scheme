@@ -53,6 +53,10 @@
 		 (+ (d k) result)))))
   (iter k 0))
 
+(cont-frac (lambda (i) 1.0)
+	   (lambda (i) 1.0)
+	   11)
+
 (define (cont-frac n d k)
   (define (recur i)
     (if (> i k)
@@ -61,3 +65,4 @@
 	   (+ (d i)
 	      (recur (+ i 1))))))
   (recur 1))
+
