@@ -13,6 +13,17 @@
 			result))))
   (iter a null-value))
 
+(define (filtered-accumulate fltr combiner null-value term a next b)
+  (define (iter a result)
+    (cond ((> a b) result)
+	  ((fltr a) (iter (next a)
+			  (combiner (term a)
+				    result)))
+	  (else (iter (next a)
+		      result))))
+  (iter a null-value))
+
+
 (define (sum term a next b)
   (accumulate + 0 term a next b))
 
