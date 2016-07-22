@@ -3,6 +3,14 @@
       1
       (* (term a) (product term (next a) next b))))
 
+(define (product term a next b)
+  (define (iter a result)
+    (if (> a b)
+	result
+	(iter (next a)
+	      (* (term a) result))))
+  (iter a 1))
+
 (define (factorial n)
   (define (inc n) (+ n 1))
   (define (identity x) x)
@@ -18,3 +26,5 @@
   (if (even? b)
       (pi-ratio b)
       (pi-ratio (- b 1))))
+
+(pi-approx 31)
