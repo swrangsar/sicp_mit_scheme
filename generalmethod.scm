@@ -1,6 +1,8 @@
 ;;;; general methods
 
 (define (search f neg-point pos-point)
+  (define (close-enough? x y)
+    (< (abs (- x y)) 0.001))
   (let ((midpoint (average neg-point pos-point)))
     (if (close-enough? neg-point pos-point)
 	midpoint
@@ -14,8 +16,8 @@
 (define (average x y)
   (/ (+ x y) 2))
 
-(define (close-enough? x y)
-  (< (abs (- x y)) 0.001))
+;;; (define (close-enough? x y)
+;;;   (< (abs (- x y)) 0.001))
 
 (define (half-interval-method f a b)
   (let ((a-value (f a))
@@ -45,6 +47,15 @@
 ;;;	       1.0))
 
 (define (cont-frac n d k)
+  (define (recur i)
+    (if (> i k)
+	0
+	(/ (n i)
+	   (+ (d i)
+	      (recur (+ i 1))))))
+  (recur 1))
+
+(define (cont-frac n d k)
   (define (iter k result)
     (if (= k 0)
 	result
@@ -57,14 +68,6 @@
 ;;;	       (lambda (i) 1.0)
 ;;;	        11)
 
-(define (cont-frac n d k)
-  (define (recur i)
-    (if (> i k)
-	0
-	(/ (n i)
-	   (+ (d i)
-	      (recur (+ i 1))))))
-  (recur 1))
 
 (define (euler-cont-frac n)
   (define (denom k)
@@ -84,3 +87,27 @@
        (+ 1 (cont-frac (lambda (i) neg-sq)
 		       (lambda (i) (+ (* 2 i) 1))
 		       k)))))
+
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+
+#|
+(define (sqrt x)
+  (fixed-point (average-damp (lambda (y) (/ x y)))
+	       1.0))
+|#
+
+(define (cube-root x)
+  (fixed-point (average-damp (lambda (y) (/ x (square y))))
+	       1.0))
+
+(define (deriv g)
+  (lambda (x)
+    (/ (- (g (+ x dx)) (g x))
+       dx)))
+
+(define dx 0.00001)
+
+(define (cube x) (* x x x))
+
+;;; ((deriv cube) 5)
