@@ -153,3 +153,9 @@
 
 ;;; ((double inc) 1)
 ;;; (((double (double double)) inc) 5)
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+;;; ((compose square inc) 6)
