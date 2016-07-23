@@ -138,3 +138,9 @@
 			    newton-transform
 			    1.0))
 |#
+
+(define (cubic a b c)
+  (lambda (x)
+    (+ (* (+ (* (+ x a) x) b) x) c)))
+
+(newtons-method (cubic 2 3 5) 1)
