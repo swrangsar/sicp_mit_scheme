@@ -91,11 +91,9 @@
 (define (average-damp f)
   (lambda (x) (average x (f x))))
 
-#|
-(define (sqrt x)
-  (fixed-point (average-damp (lambda (y) (/ x y)))
-	       1.0))
-|#
+;;; (define (sqrt x)
+;;;   (fixed-point (average-damp (lambda (y) (/ x y)))
+;;; 	       1.0))
 
 (define (cube-root x)
   (fixed-point (average-damp (lambda (y) (/ x (square y))))
@@ -119,25 +117,21 @@
 (define (newtons-method g guess)
   (fixed-point (newton-transform g) guess))
 
-#|
-(define (sqrt x)
-  (newtons-method (lambda (y) (- (square y) x))
-		  1.0))
-|#
+;;; (define (sqrt x)
+;;;   (newtons-method (lambda (y) (- (square y) x))
+;;; 		  1.0))
 
 (define (fixed-point-of-transform g transform guess)
   (fixed-point (transform g) guess))
 
-#|
-(define (sqrt x)
-  (fixed-point-of-transform (lambda (y) (/ x y))
-			    average-damp
-			    1.0))
-(define (sqrt x)
-  (fixed-point-of-transform (lambda (y) (- (square y) x))
-			    newton-transform
-			    1.0))
-|#
+;;; (define (sqrt x)
+;;;   (fixed-point-of-transform (lambda (y) (/ x y))
+;;; 			    average-damp
+;;; 			    1.0))
+;;; (define (sqrt x)
+;;;   (fixed-point-of-transform (lambda (y) (- (square y) x))
+;;; 			    newton-transform
+;;; 			    1.0))
 
 (define (cubic a b c)
   (lambda (x)
@@ -167,3 +161,28 @@
 		(- n 1))))
 
 ;;; ((repeated square 2) 5)
+
+(define (smooth f)
+  (lambda (x)
+    (/ (+ (f (- x dx))
+	  (f x)
+	  (f (+ x dx)))
+       3)))
+
+;;; ((smooth square) 5)
+;;; (((repeated smooth 2) square) 5)
+;;; (((repeated smooth 3) square) 5)
+
+;;; (define (root4 x)
+;;;   (fixed-point ((repeated average-damp 2)
+;;; 		 (lambda (y) (/ x (cube y))))
+;;; 		 1.0))
+;;; (root4 16)
+;;; (root4 81)
+
+(define (nth-root n x)
+  (fixed-point ((repeated average-damp
+			  4)
+		 (lambda (y) (/ x
+				(expt y (- n 1)))))
+	       1.0))
