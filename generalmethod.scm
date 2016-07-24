@@ -186,3 +186,5 @@
 		 (lambda (y) (/ x
 				(expt y (- n 1)))))
 	       1.0))
+
+;;; (nth-root 37 (expt 37 37))
