@@ -180,11 +180,28 @@
 ;;; (root4 16)
 ;;; (root4 81)
 
-(define (nth-root n x)
+(define (nth-root x n)
+  (define (damping-count k)
+    (if (< n (expt 2 (+ k 1)))
+	k
+	(damping-count (+ k 1))))
   (fixed-point ((repeated average-damp
-			  4)
+			  (damping-count 0))
 		 (lambda (y) (/ x
 				(expt y (- n 1)))))
 	       1.0))
 
-;;; (nth-root 37 (expt 37 37))
+;;; (nth-root (expt 37 37) 37)
+
+(define (iterative-improve check improve)
+  (define (iter guess)
+    (if (check guess)
+	guess
+	(iter (improve guess))))
+  iter)
+
+;;; (define (sqrt x)
+;;;   ((iterative-improve
+;;;     (lambda (guess) (< (abs (- (square guess) x)) 0.001))
+;;;     (lambda (guess) (average guess (/ x guess))))
+;;;    1.0))
