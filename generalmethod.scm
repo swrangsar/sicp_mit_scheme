@@ -205,3 +205,15 @@
 ;;;     (lambda (guess) (< (abs (- (square guess) x)) 0.001))
 ;;;     (lambda (guess) (average guess (/ x guess))))
 ;;;    1.0))
+
+#|
+(define (fixed-point f first-guess)
+  ((iterative-improve
+    (lambda (guess) (< (abs (- guess (f guess))) tolerance))
+    f)
+    first-guess))
+|#
+
+;;; (fixed-point cos 1.0)
+;;; (fixed-point (lambda (y) (+ (sin y) (cos y)))
+;;; 	     1.0)
