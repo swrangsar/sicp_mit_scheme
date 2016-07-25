@@ -13,9 +13,13 @@
 		   (max p1 p2 p3 p4))))
 
 (define (div-interval x y)
-  (mul-interval x
-		(make-interval (/ 1.0 (upper-bound y))
-			       (/ 1.0 (lower-bound y)))))
+  (let ((yl (lower-bound y))
+	(yu (upper-bound y)))
+    (if (or (= yl 0) (= yu 0))
+	(error "zero bound yl " yl " yu " yu)
+	(mul-interval x
+	  (make-interval (/ 1.0 yu)
+			 (/ 1.0 yl))))))
 
 (define (make-interval a b)
       (cons a b))
