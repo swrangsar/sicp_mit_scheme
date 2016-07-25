@@ -60,3 +60,17 @@
 	    (make-interval (* b c) (* b d)))
 	  (else
 	    (make-interval (* a c) (* b d))))))
+
+(define (make-center-percent c p)
+  (let ((width (* c (/ p 100))))
+    (make-interval (- c width)
+		   (+ c width))))
+
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+(define (percent i)
+  (define (calc-pc c l)
+    (let ((w (- c l)))
+      (* 100 (/ w c))))
+  (calc-pc (center i) (lower-bound i)))
