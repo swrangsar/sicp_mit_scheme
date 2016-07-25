@@ -90,3 +90,38 @@
 ;;;     (make-segment
 ;;;       (make-point 0 1)
 ;;;       (make-point 1 0))))
+
+(define (make-rect a b c d)
+  (cons (make-segment a b)
+	(make-segment c d)))
+
+(define (distance x y)
+  (sqrt (+ (square (- (x-point x) (x-point y)))
+	   (square (- (y-point x) (y-point y))))))
+
+(define (rect-width rect)
+  (let ((seg (car rect)))
+    (distance (start-segment seg)
+	      (end-segment seg))))
+
+(define (rect-height rect)
+  (let ((x (end-segment (car rect)))
+	(y (start-segment (cdr rect))))
+    (distance x y)))
+
+(define (rect-perimeter rect)
+  (* 2 (+ (rect-width rect)
+	  (rect-height rect))))
+
+(define (rect-area rect)
+  (* (rect-width rect)
+     (rect-height rect)))
+
+(define myrect
+  (make-rect (make-point 0 1)
+	     (make-point 7 1)
+	     (make-point 7 0)
+	     (make-point 0 0)))
+
+(rect-perimeter myrect)
+(rect-area myrect)
