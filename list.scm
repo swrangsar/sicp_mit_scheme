@@ -90,5 +90,25 @@
 	      (iter (cdr v) result)))))
   (iter l (cons a ())))
 
-(same-parity 1 2 3 4 5 6 7)
-(same-parity 2 3 4 5 6 7)
+;;; (same-parity 1 2 3 4 5 6 7)
+;;; (same-parity 2 3 4 5 6 7)
+
+(define nil ())
+;;; 
+;;; (define (scale-list items factor)
+;;;   (if (null? items)
+;;;       nil
+;;;       (cons (* (car items) factor)
+;;; 	    (scale-list (cdr items) factor))))
+
+(define (scale-list items factor)
+  (map (lambda (x) (* x factor))
+       items))
+
+(scale-list (list 1 2 3 4 5) 10)
+
+(define (map proc items)
+  (if (null? items)
+      nil
+      (cons (proc (car items))
+	    (map proc (cdr items)))))
