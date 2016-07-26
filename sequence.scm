@@ -27,15 +27,15 @@
 ;;; 	(else (+ (sum-odd-squares (car tree))
 ;;; 		 (sum-odd-squares (cdr tree))))))
 
-(define (even-fibs n)
-  (define (next k)
-    (if (> k n)
-	nil
-	(let ((f (fib k)))
-	  (if (even? f)
-	      (cons f (next (+ k 1)))
-	      (next (+ k 1))))))
-  (next 0))
+;;; (define (even-fibs n)
+;;;   (define (next k)
+;;;     (if (> k n)
+;;; 	nil
+;;; 	(let ((f (fib k)))
+;;; 	  (if (even? f)
+;;; 	      (cons f (next (+ k 1)))
+;;; 	      (next (+ k 1))))))
+;;;   (next 0))
 
 ;;; (sum-odd-squares sample-tree)
 ;;; (even-fibs 11)
@@ -73,3 +73,38 @@
 		      (enumerate-tree (cdr tree))))))
 
 ;;; (enumerate-tree sample-tree)
+
+(define (sum-odd-squares tree)
+  (accumulate +
+	      0
+	      (map square
+		   (filter odd?
+			   (enumerate-tree tree)))))
+
+;;;(sum-odd-squares sample-tree)
+
+(define (even-fibs n)
+  (accumulate cons
+	      nil
+	      (filter even?
+		      (map fib
+			   (enumerate-interval 0 n)))))
+
+;;; (even-fibs 13)
+
+(define (list-fib-squares n)
+  (accumulate cons
+	      nil
+	      (map square
+		   (map fib
+			(enumerate-interval 0 n)))))
+
+;;; (list-fib-squares 10)
+
+(define (product-of-squares-of-odd-elements sequence)
+  (accumulate *
+	      1
+	      (map square
+		   (filter odd? sequence))))
+
+(product-of-squares-of-odd-elements (list 1 2 3 4 5))
