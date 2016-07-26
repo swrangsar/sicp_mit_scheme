@@ -105,10 +105,43 @@
   (map (lambda (x) (* x factor))
        items))
 
-(scale-list (list 1 2 3 4 5) 10)
+;;; (scale-list (list 1 2 3 4 5) 10)
 
 (define (map proc items)
   (if (null? items)
       nil
       (cons (proc (car items))
 	    (map proc (cdr items)))))
+
+;;; (define (square-list items)
+;;;   (if (null? items)
+;;;       nil
+;;;       (cons (square (car items))
+;;; 	    (square-list (cdr items)))))
+
+;;; (define (square-list items)
+;;;   (define (iter things answer)
+;;;     (if (null? things)
+;;; 	(reverse answer)
+;;; 	(iter (cdr things)
+;;; 	      (cons (square (car things))
+;;; 		    answer))))
+;;;   (iter items nil))
+;;; 
+;;; (square-list (list 1 2 3 4))
+
+(define (square-list items)
+  (map square items))
+
+;;; (square-list (list 1 2 3 4))
+
+(define (for-each f v)
+  (define (helper)
+    (f (car v))
+    (for-each f (cdr v)))
+  (if (null? v)
+      true
+      (helper)))
+
+(for-each (lambda (x) (newline) (display x))
+	  (list 57 321 88))
