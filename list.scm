@@ -195,3 +195,54 @@
 
 ;;; (fringe x)
 ;;; (fringe (list x x))
+
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+
+(define (left-branch m)
+  (car m))
+
+(define (right-branch m)
+  (cadr m))
+
+(define (branch-length b)
+  (car b))
+
+(define (branch-structure b)
+  (cadr b))
+
+(define (total-weight m)
+  (if (not (pair? m))
+      m
+      (+ (total-weight
+	   (branch-structure (left-branch m)))
+	 (total-weight
+	   (branch-structure (right-branch m))))))
+
+(define (mobile-balance? m)
+  (if (not (pair? m))
+      true
+      (let ((lb (left-branch m))
+	    (rb (right-branch m)))
+	(let ((lm (branch-structure lb))
+	      (rm (branch-structure rb)))
+	  (and (mobile-balance? lm)
+	       (mobile-balance? rm)
+	       (= (* (branch-length lb) (total-weight lm))
+		  (* (branch-length rb) (total-weight rm))))))))
+
+;;; (define br1 (make-branch 7 17))
+;;; (define br2 (make-branch 17 7))
+;;; (define mob1 (make-mobile br1 br2))
+;;; (define br3 (make-branch 23 mob1))
+;;; (define mob2 (make-mobile br1 br3))
+;;; (mobile-balance? mob1)
+;;; (mobile-balance? mob2)
+;;; (branch-structure br1)
+;;; (branch-structure br3)
+;;; (branch-length br2)
+;;; (left-branch mob1)
+;;; (right-branch mob2)
