@@ -183,3 +183,15 @@
 ;;; x
 ;;; (reverse x)
 ;;; (deep-reverse x)
+
+(define (fringe x)
+  (if (null? x)
+      nil
+      (let ((head (car x))
+	    (tail (cdr x)))
+	(if (not (pair? head))
+	    (cons head (fringe tail))
+	    (append (fringe head) (fringe tail))))))
+
+;;; (fringe x)
+;;; (fringe (list x x))
