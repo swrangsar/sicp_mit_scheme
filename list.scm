@@ -160,6 +160,26 @@
 ;;; (length (list x x))
 ;;; (count-leaves (list x x))
 
+#|
 (car (cdaddr (list 1 3 (list 5 7) 9)))
 (caar (list (list 7)))
 (cadadr (cadadr (cadadr (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))))
+|#
+
+(define (deep-reverse x)
+  (define (rev-iter l res)
+    (if (null? l)
+ 	res
+	(rev-iter (cdr l)
+		  (cons (let ((a (car l)))
+			  (if (pair? a)
+			      (rev-iter a nil)
+			      a))
+			res))))
+  (rev-iter x nil))
+
+;;; (define x (list (list 1 2) (list 3 4)))
+;;; 
+;;; x
+;;; (reverse x)
+;;; (deep-reverse x)
