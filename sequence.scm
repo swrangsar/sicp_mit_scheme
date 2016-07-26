@@ -107,4 +107,19 @@
 	      (map square
 		   (filter odd? sequence))))
 
-(product-of-squares-of-odd-elements (list 1 2 3 4 5))
+;;; (product-of-squares-of-odd-elements (list 1 2 3 4 5))
+
+;;; (define (map p sequence)
+;;;   (accumulate (lambda (x y) (cons (p x) y)) nil sequence))
+
+;;; (map square (list 1 3 7))
+
+;;; (define (append seq1 seq2)
+;;;   (accumulate cons seq2 seq1))
+
+;;; (append (list 3 7 5) (list 1 2 3))
+
+;;; (define (length sequence)
+;;;  (accumulate (lambda (x y) (+ 1 y)) 0 sequence))
+;;; 
+;;; (length (list 2 7 17 5 3))
