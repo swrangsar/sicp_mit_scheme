@@ -77,5 +77,18 @@
 (define (no-more? v)
   (null? v))
 
-(cc 100 us-coins)
-(cc 100 (reverse us-coins))
+;;; (cc 100 us-coins)
+;;; (cc 100 (reverse us-coins))
+
+(define (same-parity a . l)
+  (define (iter v result)
+    (if (null? v)
+	(reverse result)
+	(let ((item (car v)))
+	  (if (= (remainder (- item a) 2) 0)
+	      (iter (cdr v) (cons item result))
+	      (iter (cdr v) result)))))
+  (iter l (cons a ())))
+
+(same-parity 1 2 3 4 5 6 7)
+(same-parity 2 3 4 5 6 7)
