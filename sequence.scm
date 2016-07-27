@@ -244,4 +244,20 @@
 		       (enumerate-interval 1 (- i 1))))
 		(enumerate-interval 1 n)))))
 
-(prime-sum-pairs 6)
+;;; (prime-sum-pairs 6)
+
+(define (remove item sequence)
+  (filter (lambda (x) (not (= x item)))
+	  sequence))
+
+(define (permutations s)
+  (if (null? s)
+      (list nil)
+      (flatmap (lambda (x)
+		 (map (lambda (p) (cons x p))
+		      (permutations (remove x s))))
+	       s)))
+
+;;; (remove 7 (list 1 17 37 73 7 10 19))
+;;; (permutations (list 1 2 3))
+;;; (permutations (list 1 2 3 4))
