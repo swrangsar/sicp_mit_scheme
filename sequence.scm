@@ -1,5 +1,7 @@
 ;;;; sequence as conventional interface
 
+(load "prime")
+
 (define nil ())
 (define sample-tree
   (list 1
@@ -212,7 +214,7 @@
 	      nil
 	      sequence))
 
-(reverse sample-vector)
+;;; (reverse sample-vector)
 
 (define (reverse sequence)
   (fold-left (lambda (x y)
@@ -220,4 +222,26 @@
 	     nil
 	     sequence))
 
-(reverse sample-vector)
+;;; (reverse sample-vector)
+;;; (prime? 71)
+;;; (prime? 117)
+
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+(define (prime-sum? pair)
+  (prime? (+ (car pair) (cadr pair))))
+
+(define (make-pair-sum pair)
+  (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+
+(define (prime-sum-pairs n)
+  (map make-pair-sum
+       (filter prime-sum?
+	       (flatmap
+		(lambda (i)
+		  (map (lambda (j) (list i j))
+		       (enumerate-interval 1 (- i 1))))
+		(enumerate-interval 1 n)))))
+
+(prime-sum-pairs 6)
