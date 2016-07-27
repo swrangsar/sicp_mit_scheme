@@ -195,3 +195,26 @@
       (lambda (frame)
 	(paint-left frame)
 	(paint-right frame)))))
+
+(define (below painter1 painter2)
+  (let ((split-point (make-vect 0.0 0.5)))
+    (let ((paint-bottom
+	   (transform-painter painter1
+			      (make-vect 0.0 0.0)
+			      (make-vect 1.0 0.0)
+		              split-point))
+	  (paint-top
+	   (transform-painter painter2
+			      split-point
+			      (make-vect 1.0 0.5)
+			      (make-vect 0.0 1.0))))
+      (lambda (frame)
+	(paint-top frame)
+	(paint-bottom frame)))))
+
+(define (below painter1 painter2)
+  (let ((paint-left (rotate90 painter2))
+	(paint-right (rotate90 painter1)))
+    (let ((paint90 (beside paint-left paint-right)))
+      (lambda (frame)
+	((rotate270 paint90) frame)))))
