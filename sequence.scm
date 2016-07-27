@@ -147,9 +147,30 @@
 	    (accumulate-n op init
 	     		  (map cdr seqs)))))
 
-(accumulate-n +
-	      0
-	      (list (list 1 2 3)
-		    (list 4 5 6)
-		    (list 7 8 9)
-		    (list 10 11 12)))
+;;; (accumulate-n +
+;;; 	      0
+;;; 	      (list (list 1 2 3)
+;;; 		    (list 4 5 6)
+;;; 		    (list 7 8 9)
+;;; 		    (list 10 11 12)))
+
+(define sample-vector (list 1 2 3 4))
+(define sample-matrix (list (list 1 2 3 4)
+			    (list 4 5 6 6)
+			    (list 6 7 8 9)))
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+(define (matrix-*-vector m v)
+  (map (lambda (r)
+	 (dot-product r v))
+       m))
+
+(dot-product sample-vector sample-vector)
+(matrix-*-vector sample-matrix sample-vector)
+
+(define (transpose mat)
+  (accumulate-n cons nil mat))
+
+(transpose sample-matrix)
