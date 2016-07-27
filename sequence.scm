@@ -3,10 +3,11 @@
 (load "prime")
 
 (define nil ())
-(define sample-tree
-  (list 1
-	(list 2 (list 3 4) 5)
-	(list 6 7)))
+
+;;; (define sample-tree
+;;;   (list 1
+;;; 	(list 2 (list 3 4) 5)
+;;; 	(list 6 7)))
 
 
 (define (fib n)
