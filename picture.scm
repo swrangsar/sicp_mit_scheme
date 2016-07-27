@@ -29,8 +29,17 @@
 	(let ((smaller ((split f g) painter (- n 1))))
 	  (f painter (g smaller smaller))))))
 
-(define right-split (split beside below))
-(define up-split (split below beside))
+
+(define (corner-split painter n)
+  (if (= n 0)
+      painter
+      (let ((up (up-split painter (- n 1)))
+	    (right (right-split painter (- n 1))))
+	(let ((top-left (beside up up))
+	      (bottom-right (below right right))
+	      (corner (corner-split painter (- n 1))))
+	  (beside (below painter top-left)
+		  (below bottom-right corner))))))
 
 (define (frame-coord-map frame)
   (lambda (v)
@@ -218,3 +227,6 @@
     (let ((paint90 (beside paint-left paint-right)))
       (lambda (frame)
 	((rotate270 paint90) frame)))))
+
+(define right-split (split beside below))
+(define up-split (split below beside))
