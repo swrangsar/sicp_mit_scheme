@@ -167,10 +167,19 @@
 	 (dot-product r v))
        m))
 
-(dot-product sample-vector sample-vector)
-(matrix-*-vector sample-matrix sample-vector)
+;;; (dot-product sample-vector sample-vector)
+;;; (matrix-*-vector sample-matrix sample-vector)
 
 (define (transpose mat)
   (accumulate-n cons nil mat))
 
-(transpose sample-matrix)
+;;; (transpose sample-matrix)
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (r)
+	   (matrix-*-vector cols r))
+	 m)))
+
+;;; (matrix-*-matrix sample-matrix
+;;; 	 	 (transpose sample-matrix))
