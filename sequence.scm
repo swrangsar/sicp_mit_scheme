@@ -130,4 +130,11 @@
 	      0
 	      coefficient-sequence))
 
-(horner-eval 2 (list 1 3 0 5 0 1))
+;;; (horner-eval 2 (list 1 3 0 5 0 1))
+
+(define (count-leaves t)
+  (accumulate (lambda (x y) (+ (length x) y))
+	      0
+	      (map enumerate-tree t)))
+
+(count-leaves sample-tree)
