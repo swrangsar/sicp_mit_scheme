@@ -205,3 +205,19 @@
 ;;; 
 ;;; (fold-right - 1 (list 1 2 3))
 ;;; (fold-left - 1 (list 1 2 3))
+
+(define (reverse sequence)
+  (fold-right (lambda (x y)
+		(append y (list x)))
+	      nil
+	      sequence))
+
+(reverse sample-vector)
+
+(define (reverse sequence)
+  (fold-left (lambda (x y)
+	       (cons y x))
+	     nil
+	     sequence))
+
+(reverse sample-vector)
