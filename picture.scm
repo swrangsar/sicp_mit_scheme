@@ -40,3 +40,42 @@
 			   (edge1-frame frame))
 	       (scale-vect (ycor-vect v)
 			   (edge2-frame frame))))))
+
+(define (make-vect x y)
+  (list x y))
+
+(define (xcor-vect v)
+  (car v))
+
+(define (ycor-vect v)
+  (cadr v))
+
+(define (add-vect v w)
+  (make-vect (+ (xcor-vect v) (xcor-vect w))
+	     (+ (ycor-vect v) (ycor-vect w))))
+
+(define (sub-vect v w)
+  (make-vect (- (xcor-vect v) (xcor-vect w))
+	     (- (ycor-vect v) (ycor-vect w))))
+
+(define (scale-vect s v)
+  (make-vect (* s (xcor-vect v))
+	     (* s (ycor-vect v))))
+
+(define (make-frame origin edge1 edge2)
+  (list origin edge1 edge2))
+
+(define (origin-frame frame)
+  (car frame))
+
+(define (edge1-frame frame)
+  (cadr frame))
+
+(define (edge2-frame frame)
+  (caddr frame))
+
+(define (make-frame origin edge1 edge2)
+  (cons origin (cons edge1 edge2)))
+
+(define (edge2-frame frame)
+  (cddr frame))
