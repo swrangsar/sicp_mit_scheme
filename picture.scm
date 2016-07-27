@@ -88,3 +88,43 @@
  	((frame-coord-map frame) (start-segment segment))
 	((frame-coord-map frame) (end-segment segment))))
      segment-list)))
+
+(define (make-segment s e)
+  (cons s e))
+
+(define (start-segment seg)
+  (car seg))
+
+(define (end-segment seg)
+  (cdr seg))
+
+(define (frame-outline-painter frame)
+  (let ((a (make-vect 0 0))
+	(b (make-vect 0 1))
+	(c (make-vect 1 0))
+	(d (make-vect 1 1)))
+    ((segments->painter
+     (list (make-segment a b)
+	   (make-segment a c)
+	   (make-segment b d)
+	   (make-segment c d))) frame)))
+
+(define (frame-x-painter frame)
+  (let ((a (make-vect 0 0))
+	(b (make-vect 0 1))
+	(c (make-vect 1 0))
+	(d (make-vect 1 1)))
+    ((segments->painter
+     (list (make-segment a d)
+	   (make-segment b c))) frame)))
+
+(define (frame-diamond-painter frame)
+  (let ((a (make-vect 0.5 0))
+	(b (make-vect 1 0.5))
+	(c (make-vect 0 0.5))
+	(d (make-vect 0.5 1)))
+    ((segments->painter
+     (list (make-segment a b)
+	   (make-segment a c)
+	   (make-segment b d)
+	   (make-segment c d))) frame)))
