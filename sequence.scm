@@ -183,3 +183,25 @@
 
 ;;; (matrix-*-matrix sample-matrix
 ;;; 	 	 (transpose sample-matrix))
+
+(define (fold-left op initial sequence)
+  (define (iter result rest)
+    (if (null? rest)
+	result
+	(iter (op result (car rest))
+	      (cdr rest))))
+  (iter initial sequence))
+
+(define fold-right accumulate)
+;;; 
+;;; (fold-right / 1 (list 1 2 3))
+;;; (fold-left / 1 (list 1 2 3))
+;;; (fold-right list nil (list 1 2 3))
+;;; (fold-left list nil (list 1 2 3))
+;;; (fold-right * 1 (list 1 2 3))
+;;; (fold-left * 1 (list 1 2 3))
+;;; (fold-right + 1 (list 1 2 3))
+;;; (fold-left + 1 (list 1 2 3))
+;;; 
+;;; (fold-right - 1 (list 1 2 3))
+;;; (fold-left - 1 (list 1 2 3))
