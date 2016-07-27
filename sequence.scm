@@ -185,7 +185,7 @@
 
 ;;; (matrix-*-matrix sample-matrix
 ;;; 	 	 (transpose sample-matrix))
-
+#|
 (define (fold-left op initial sequence)
   (define (iter result rest)
     (if (null? rest)
@@ -195,6 +195,7 @@
   (iter initial sequence))
 
 (define fold-right accumulate)
+|#
 ;;; 
 ;;; (fold-right / 1 (list 1 2 3))
 ;;; (fold-left / 1 (list 1 2 3))
@@ -207,7 +208,7 @@
 ;;; 
 ;;; (fold-right - 1 (list 1 2 3))
 ;;; (fold-left - 1 (list 1 2 3))
-
+#|
 (define (reverse sequence)
   (fold-right (lambda (x y)
 		(append y (list x)))
@@ -221,7 +222,7 @@
 	       (cons y x))
 	     nil
 	     sequence))
-
+|#
 ;;; (reverse sample-vector)
 ;;; (prime? 71)
 ;;; (prime? 117)
@@ -235,6 +236,7 @@
 (define (make-pair-sum pair)
   (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
 
+#|
 (define (prime-sum-pairs n)
   (map make-pair-sum
        (filter prime-sum?
@@ -243,14 +245,14 @@
 		  (map (lambda (j) (list i j))
 		       (enumerate-interval 1 (- i 1))))
 		(enumerate-interval 1 n)))))
+|#
 
-;;; (prime-sum-pairs 6)
 
-(define (remove item sequence)
-  (filter (lambda (x) (not (= x item)))
-	  sequence))
 
 (define (permutations s)
+  (define (remove item sequence)
+    (filter (lambda (x) (not (= x item)))
+	    sequence))
   (if (null? s)
       (list nil)
       (flatmap (lambda (x)
@@ -261,3 +263,31 @@
 ;;; (remove 7 (list 1 17 37 73 7 10 19))
 ;;; (permutations (list 1 2 3))
 ;;; (permutations (list 1 2 3 4))
+
+(define (unique-pairs n)
+  (flatmap (lambda (i)
+	     (map (lambda (j) (list i j))
+		  (enumerate-interval 1 (- i 1))))
+	   (enumerate-interval 1 n)))
+
+(define (prime-sum-pairs n)
+  (map make-pair-sum
+       (filter prime-sum?
+	       (unique-pairs n))))
+
+;;; (prime-sum-pairs 6)
+
+(define (unique-triples n)
+  (flatmap (lambda (pair)
+	     (map (lambda (k) (append pair (list k)))
+		  (enumerate-interval 1 (- (cadr pair) 1))))
+	   (unique-pairs n)))
+
+;;; (unique-triples 5)
+
+(define (sum-triples n s)
+  (filter (lambda (x)
+	    (= s (accumulate + 0 x)))
+	  (unique-triples n)))
+
+;;; (sum-triples 17 11)
