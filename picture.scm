@@ -29,7 +29,6 @@
 	(let ((smaller ((split f g) painter (- n 1))))
 	  (f painter (g smaller smaller))))))
 
-
 (define (corner-split painter n)
   (if (= n 0)
       painter
@@ -230,3 +229,39 @@
 
 (define right-split (split beside below))
 (define up-split (split below beside))
+
+(define (corner-split painter n)
+  (if (= n 0)
+      painter
+      (let ((up (up-split painter (- n 1)))
+	    (right (right-split painter (- n 1))))
+	(let ((corner (corner-split painter (- n 1))))
+	  (beside (below painter up)
+		  (below right corner))))))
+
+(define (square-limit painter n)
+  (let ((combine4 (square-of-four flip-horiz identity
+				  rotate180 flip-vert)))
+    (combine4 (corner-split (flip-horiz painter) n))))
+
+(define (wave frame)
+  (let ((a (make-vect 0.0 0.6))
+	(b (make-vect 0.1 0.4))
+	(c (make-vect 0.27 0.55))
+	(d (make-vect 0.3 0.5))
+	(e (make-vect 0.25 0.0))
+	(f (make-vect 0.4 0.0))
+	(g (make-vect 0.5 0.27))
+	(h (make-vect 0.6 0.0))
+	(i (make-vect 0.75 0.0))
+	(j (make-vect 0.6 0.4))
+	(k (make-vect 1.0 0.15)))
+    ((segments->painter
+      (list (make-segment a b)
+	    (make-segment b c)
+	    (make-segment c d)
+	    (make-segment d e)
+	    (make-segment f g)
+	    (make-segment g h)
+	    (make-segment i j)
+	    (make-segment j k))) frame)))
