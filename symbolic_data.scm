@@ -65,14 +65,22 @@
 
 (define (addend s) (cadr s))
 
-(define (augend s) (caddr s))
+(define (augend s)
+  (let ((tail (cddr s)))
+    (if (null? (cdr tail))
+	(car tail) 
+	(cons '+ tail))))
 
 (define (product? x)
   (and (pair? x) (eq? (car x) '*)))
 
 (define (multiplier p) (cadr p))
 
-(define (multiplicand p) (caddr p))
+(define (multiplicand p)
+  (let ((tail (cddr p)))
+    (if (null? (cdr tail))
+	(car tail) 
+	(cons '* tail))))
 
 (define (make-sum a1 a2)
   (cond ((=number? a1 0) a2)
@@ -108,3 +116,4 @@
 (deriv '(* x y) 'x)
 (deriv '(* (* x y) (+ x 3)) 'x)
 (deriv '(** (+ x 3) 3) 'x)
+(deriv '(* x y (+ x 3)) 'x)
