@@ -33,15 +33,21 @@
 	((variable? exp)
 	 (if (same-variable? exp var) 1 0))
 	((sum? exp)
-	 (make-sum
-	   (deriv (addend exp) var)
-	   (deriv (augend exp) var)))
+	 (make-sum (deriv (addend exp) var)
+		   (deriv (augend exp) var)))
 	((product? exp)
 	 (make-sum
 	   (make-product (multiplier exp)
 			 (deriv (multiplicand exp) var))
 	   (make-product (deriv (multiplier exp) var)
 			 (multiplicand exp))))
+	((exponentiation? exp)
+	 (let ((u (base exp))
+	       (n (exponent exp)))
+	   (make-product
+	    (make-product n
+			  (make-exponentiation u (- n 1)))
+	    (deriv u var))))
 	(else
 	 (error "unknown expression type -- DERIV" exp))))
 
@@ -84,6 +90,21 @@
 	((and (number? m1) (number? m2)) (* m1 m2))
 	(else (list '* m1 m2))))
 
+(define (make-exponentiation base exponent)
+  (cond ((=number? exponent 0) 1)
+	((=number? exponent 1) base)
+	(else (list '** base exponent))))
+
+(define (exponentiation? x)
+  (and (pair? x) (eq? (car x) '**)))
+
+(define (base e)
+	(cadr e))
+
+(define (exponent e)
+	(caddr e))
+
 (deriv '(+ x 3) 'x)
 (deriv '(* x y) 'x)
 (deriv '(* (* x y) (+ x 3)) 'x)
+(deriv '(** (+ x 3) 3) 'x)
