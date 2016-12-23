@@ -8,7 +8,7 @@
 
 (define (addend s)
   (cond ((null? s) s)
-	((not (pair? s)) '())
+;;;	((not (pair? s)) '())
         ((eq? (car s) '+) '())
 	((eq? (cadr s) '+) (car s))
         (else
