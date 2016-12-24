@@ -133,3 +133,12 @@
 (intersection-set sample_tree1 sample_tree2)
 (intersection-set '() sample_tree2)
 (intersection-set '(3 () ()) sample_tree2)
+
+(define (lookup given-key set-of-records)
+  (cond ((null? set-of-records) false)
+        ((equal? given-key (key (entry set-of-records)))
+         (entry set-of-records))
+        ((< given-key (key (entry set-of-records)))
+         (lookup given-key (left-branch set-of-records)))
+        ((> given-key (key (entry set-of-records)))
+         (lookup given-key (right-branch set-of-records)))))
