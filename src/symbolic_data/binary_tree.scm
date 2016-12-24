@@ -49,13 +49,37 @@
   (copy-to-list tree '()))
 
 
-(define sample_tree1 '(7 (3 (1 () ()) (5 () ())) (9 () (11 () ()))))
-(define sample_tree2 '(3 (1 () ()) (7 (5 () ()) (9 () (11 () ())))))
-(define sample_tree3 '(5 (3 (1 () ()) ()) (9 (7 () ()) (11 () ()))))
+;;; (define sample_tree1 '(7 (3 (1 () ()) (5 () ())) (9 () (11 () ()))))
+;;; (define sample_tree2 '(3 (1 () ()) (7 (5 () ()) (9 () (11 () ())))))
+;;; (define sample_tree3 '(5 (3 (1 () ()) ()) (9 (7 () ()) (11 () ()))))
+;;; 
+;;; (tree->list-1 sample_tree1)
+;;; (tree->list-2 sample_tree1)
+;;; (tree->list-1 sample_tree2)
+;;; (tree->list-2 sample_tree2)
+;;; (tree->list-1 sample_tree3)
+;;; (tree->list-2 sample_tree3)
 
-(tree->list-1 sample_tree1)
-(tree->list-2 sample_tree1)
-(tree->list-1 sample_tree2)
-(tree->list-2 sample_tree2)
-(tree->list-1 sample_tree3)
-(tree->list-2 sample_tree3)
+
+(define (partial-tree elts n)
+  (if (= n 0)
+      (cons '() elts)
+      (let ((left-size (quotient (- n 1) 2)))
+        (let ((left-result (partial-tree elts left-size)))
+          (let ((left-tree (car left-result))
+                (non-left-elts (cdr left-result))
+                (right-size (- n (+ left-size 1))))
+            (let ((this-entry (car non-left-elts))
+                  (right-result (partial-tree (cdr non-left-elts)
+                                              right-size)))
+              (let ((right-tree (car right-result))
+                    (remaining-elts (cdr right-result)))
+                (cons (make-tree this-entry left-tree right-tree)
+                      remaining-elts))))))))
+
+
+(define (list->tree elements)
+  (car (partial-tree elements (length elements))))
+
+
+(list->tree '(1 3 5 7 9 11))
