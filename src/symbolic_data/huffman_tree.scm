@@ -110,3 +110,21 @@
 (define sample-tree2 (generate-huffman-tree symbol-frequency-pairs))
 
 (encode (decode sample-message sample-tree2) sample-tree2)
+
+(define eight-symbol-alphabet '((A 2) (BOOM 1) (GET 2) (JOB 2) (NA 16) (SHA 3) (YIP 9) (WAH 1)))
+
+(define song-code-tree (generate-huffman-tree eight-symbol-alphabet))
+
+(define rock-message '(
+  Get a job
+  Sha na na na na na na na na
+  Get a job
+  Sha na na na na na na na na
+  Wah yip yip yip yip yip yip yip yip yip
+  Sha boom))
+
+(define song-code (encode rock-message song-code-tree))
+song-code
+(length song-code)
+(* (length rock-message) 3)
+(decode song-code song-code-tree)
