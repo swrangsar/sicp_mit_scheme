@@ -110,3 +110,26 @@
 
 
 (union-set sample_tree1 sample_tree2)
+
+(define (intersection-set set1 set2)
+  (define (intersection-set-list list1 list2)
+    (if (or (null? list1) (null? list2))
+        '()
+        (let ((x1 (car list1))
+              (x2 (car list2)))
+          (cond ((= x1 x2)
+                 (cons x1
+                       (intersection-set-list (cdr list1)
+                                              (cdr list2))))
+                ((< x1 x2)
+                 (intersection-set-list (cdr list1) list2))
+                ((< x2 x1)
+                 (intersection-set-list list1 (cdr list2)))))))
+  (if (or (null? set1) (null? set2))
+      '()
+      (list->tree (intersection-set-list (tree->list-2 set1)
+                                         (tree->list-2 set2)))))
+
+(intersection-set sample_tree1 sample_tree2)
+(intersection-set '() sample_tree2)
+(intersection-set '(3 () ()) sample_tree2)
