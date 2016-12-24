@@ -49,16 +49,16 @@
   (copy-to-list tree '()))
 
 
-;;; (define sample_tree1 '(7 (3 (1 () ()) (5 () ())) (9 () (11 () ()))))
-;;; (define sample_tree2 '(3 (1 () ()) (7 (5 () ()) (9 () (11 () ())))))
-;;; (define sample_tree3 '(5 (3 (1 () ()) ()) (9 (7 () ()) (11 () ()))))
-;;; 
-;;; (tree->list-1 sample_tree1)
-;;; (tree->list-2 sample_tree1)
-;;; (tree->list-1 sample_tree2)
-;;; (tree->list-2 sample_tree2)
-;;; (tree->list-1 sample_tree3)
-;;; (tree->list-2 sample_tree3)
+(define sample_tree1 '(7 (3 (1 () ()) (5 () ())) (9 () (11 () ()))))
+(define sample_tree2 '(3 (1 () ()) (7 (5 () ()) (9 () (11 () ())))))
+(define sample_tree3 '(5 (3 (1 () ()) ()) (9 (7 () ()) (11 () ()))))
+
+(tree->list-1 sample_tree1)
+(tree->list-2 sample_tree1)
+(tree->list-1 sample_tree2)
+(tree->list-2 sample_tree2)
+(tree->list-1 sample_tree3)
+(tree->list-2 sample_tree3)
 
 
 (define (partial-tree elts n)
@@ -83,3 +83,30 @@
 
 
 (list->tree '(1 3 5 7 9 11))
+
+(define (union-set set1 set2)
+  (define (union-set-list list1 list2)
+    (cond ((null? list1) list2)
+          ((null? list2) list1)
+	  (else
+           (let ((x1 (car list1))
+                 (x2 (car list2)))
+             (cond ((= x1 x2)
+                    (cons x1
+                          (union-set-list (cdr list1)
+                                          (cdr list2))))
+                   ((< x1 x2)
+                    (cons x1
+                          (union-set-list (cdr list1)
+                                          list2)))
+                   ((< x2 x1)
+                    (cons x2
+                         (union-set-list list1 (cdr list2)))))))))
+  (cond ((null? set1) set2)
+        ((null? set2) set1)
+        (else
+         (list->tree (union-set-list (tree->list-2 set1)
+                                     (tree->list-2 set2))))))
+
+
+(union-set sample_tree1 sample_tree2)
