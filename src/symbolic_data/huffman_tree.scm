@@ -93,3 +93,20 @@
         (error "not found in code tree" symbol))))
 
 (encode (decode sample-message sample-tree) sample-tree)
+
+
+(define (generate-huffman-tree pairs)
+  (successive-merge (make-leaf-set pairs)))
+
+
+(define (successive-merge tree-set)
+  (if (null? (cdr tree-set))
+      (car tree-set)
+      (let ((new-tree (make-code-tree (cadr tree-set) (car tree-set))))
+        (successive-merge
+          (adjoin-set new-tree (cddr tree-set))))))
+
+
+(define sample-tree2 (generate-huffman-tree symbol-frequency-pairs))
+
+(encode (decode sample-message sample-tree2) sample-tree2)
