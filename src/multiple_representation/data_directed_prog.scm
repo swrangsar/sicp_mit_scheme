@@ -1,4 +1,5 @@
 (load "symbolic_data/symbolic_data")
+(load "multiple_representation/table_2d")
 
 
 (define (attach-tag type-tag contents)
@@ -53,6 +54,9 @@
 (define (install-deriv-exponentiation)
   (put 'deriv '** deriv-exponentiation)
   'done)
+
+(install-deriv)
+(install-deriv-exponentiation)
 
 (deriv '(* (* x y) (+ x 3)) 'x)
 
