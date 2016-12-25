@@ -1,5 +1,7 @@
 (load "symbolic_data/symbolic_data")
 (load "multi_rep/data_directed")
+(load "multi_rep/table_2d")
+
 
 (define (deriv exp var)
   (cond ((number? exp) 0)
@@ -27,6 +29,21 @@
     (make-product (deriv (multiplier exp) var)
                   (multiplicand exp))))
 
+(define (addend s) (car s))
+(define (augend s)
+  (let ((tail (cdr s)))
+    (if (null? (cdr tail))
+        (car tail)
+        (cons '+ tail))))
+
+(define (multiplier p) (car p))
+(define (multiplicand p)
+  (let ((tail (cdr p)))
+    (if (null? (cdr tail))
+        (car tail)
+        (cons '* tail))))
+
+
 (define (install-deriv)
   (put 'deriv '+ deriv-sum)
   (put 'deriv '* deriv-product)
@@ -40,6 +57,10 @@
                                                      (make-sum exponent -1))
                                 (deriv base var)))))
 
+
+(define (base expr) (car expr))
+(define (exponent expr) (cadr expr))
+
 (define (install-deriv-exponentiation)
   (put 'deriv '** deriv-exponentiation)
   'done)
@@ -47,7 +68,12 @@
 (install-deriv)
 (install-deriv-exponentiation)
 
+
+(deriv '(+ x 3) 'x)
+(deriv '(* x y) 'x)
 (deriv '(* (* x y) (+ x 3)) 'x)
+(deriv '(** (+ x 3) 3) 'x)
+(deriv '(* x y (+ x 3)) 'x)
 
 ;;; (put '+ 'deriv deriv-sum)
 ;;; (put '* 'deriv deriv-product)
