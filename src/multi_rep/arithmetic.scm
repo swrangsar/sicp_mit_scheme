@@ -26,10 +26,6 @@
 (define (make-scheme-number n)
   ((get 'make 'scheme-number) n))
 
-(install-scheme-number-package)
-(add (make-scheme-number 3) (make-scheme-number 7))
-
-
 (define (install-rational-package)
   ;; internal procedures
   (define (numer x) (car x))
@@ -61,7 +57,6 @@
        (lambda (x y) (tag (mul-rat x y))))
   (put 'div '(rational rational)
        (lambda (x y) (tag (div-rat x y))))
-
   (put 'make 'rational
        (lambda (n d) (tag (make-rat n d))))
   'done)
@@ -69,11 +64,6 @@
 (define (make-rational n d)
   ((get 'make 'rational) n d))
 
-(install-rational-package)
-(div (make-rational 3 7) (make-rational 21 9))
-
-(install-rectangular-package)
-(install-polar-package)
 
 (define (install-complex-package)
   ;; imported procedures from rectangular and polar packages
@@ -114,12 +104,35 @@
   (put 'angle '(complex) angle)
   'done)
 
-
 (define (make-complex-from-real-imag x y)
   ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a)
   ((get 'make-from-mag-ang 'complex) r a))
 
+
+(define (attach-tag type-tag contents)
+  (cond ((number? contents) contents)
+        (else (cons type-tag contents))))
+
+(define (type-tag datum)
+  (cond ((pair? datum) (car datum))
+        ((number? datum) 'scheme-number)
+        (error "Bad tagged datum -- TYPE-TAG" datum)))
+
+(define (contents datum)
+  (cond ((pair? datum) (cdr datum))
+        ((number? datum) datum)
+        (error "Bad tagged datum -- CONTENTS" datum)))
+
+(install-scheme-number-package)
+(add (make-scheme-number 3) (make-scheme-number 7))
+
+(install-rational-package)
+(div (make-rational 3 7) (make-rational 21 9))
+
+(install-rectangular-package)
+(install-polar-package)
 (install-complex-package)
+
 (mul (make-complex-from-mag-ang 3 1.57) (make-complex-from-mag-ang 5 1.57))
 (magnitude (make-complex-from-real-imag 3 4))
