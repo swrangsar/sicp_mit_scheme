@@ -7,6 +7,7 @@
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
 (define (equ? x y) (apply-generic 'equ? x y))
+(define (=zero? x) (apply-generic '=zero? x))
 
 
 (define (install-scheme-number-package)
@@ -21,6 +22,8 @@
   (put 'div '(scheme-number scheme-number)
        (lambda (x y) (tag (/ x y))))
   (put 'equ? '(scheme-number scheme-number) =)
+  (put '=zero? '(scheme-number)
+       (lambda (x) (= x 0)))
   (put 'make 'scheme-number
        (lambda (x) (tag x)))
   'done)
@@ -52,6 +55,8 @@
   (define (equ?-rat x y)
     (and (= (numer x) (numer y))
          (= (denom x) (denom y))))
+  (define (=zero?-rat x)
+    (and (= (numer x) 0)))
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
   (put 'add '(rational rational)
@@ -63,6 +68,7 @@
   (put 'div '(rational rational)
        (lambda (x y) (tag (div-rat x y))))
   (put 'equ? '(rational rational) equ?-rat)
+  (put '=zero? '(rational) =zero?-rat)
   (put 'make 'rational
        (lambda (n d) (tag (make-rat n d))))
   'done)
@@ -95,6 +101,8 @@
          (= (angle z1) (angle z2))
          (= (real-part z1) (real-part z2))
          (= (imag-part z1) (imag-part z2))))
+  (define (=zero? z)
+    (or (= (magnitude z) 0)))
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
   (put 'add '(complex complex)
@@ -106,6 +114,7 @@
   (put 'div '(complex complex)
        (lambda (z1 z2) (tag (div-complex z1 z2))))
   (put 'equ? '(complex complex) equ?)
+  (put '=zero? '(complex) =zero?)
   (put 'make-from-real-imag 'complex
        (lambda (x y) (tag (make-from-real-imag x y))))
   (put 'make-from-mag-ang 'complex
@@ -150,3 +159,10 @@
 (magnitude (make-complex-from-real-imag 3 4))
 (equ? (make-complex-from-mag-ang 3 1.57)
       (make-complex-from-mag-ang 3 1.57))
+(=zero? (make-scheme-number 0))
+(=zero? (make-scheme-number 0.0))
+(=zero? (make-rational 0 11))
+(=zero? (make-rational 11 0))
+(=zero? (make-complex-from-real-imag 0 0.1))
+(=zero? (make-complex-from-real-imag 0 0))
+(=zero? (make-complex-from-mag-ang 0 10))
