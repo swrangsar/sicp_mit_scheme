@@ -3,7 +3,6 @@
 (define (scheme-number->complex n)
   (make-complex-from-real-imag (contents n) 0))
 
-
 (define (apply-generic op . args)
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
@@ -15,8 +14,7 @@
                     (a1 (car args))
                     (a2 (cadr args)))
                 (if (eq? type1 type2)
-                    (error "No method for these types"
-                           (list op type-tags))
+                    (error "No method for these types" (list op type-tags))
                     (let ((t1->t2 (get-coercion type1 type2))
                           (t2->t1 (get-coercion type2 type1)))
                       (cond (t1->t2
@@ -36,6 +34,8 @@
 
 (install-scheme-number-package)
 (install-rational-package)
+(install-rectangular-package)
+(install-polar-package)
 (install-complex-package)
 
 (exp 3 2)
@@ -45,5 +45,4 @@
               scheme-number->scheme-number)
 (put-coercion 'complex 'complex complex->complex)
 
-(exp 3 2)
 (exp (make-complex-from-real-imag 3 4) (make-complex-from-real-imag 5 7))

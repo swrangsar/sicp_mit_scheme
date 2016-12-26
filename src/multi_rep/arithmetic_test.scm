@@ -1,5 +1,3 @@
-(load "multi_rep/table_2d")
-(load "multi_rep/data_directed")
 (load "multi_rep/arithmetic")
 
 (install-scheme-number-package)
