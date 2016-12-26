@@ -45,4 +45,5 @@
               scheme-number->scheme-number)
 (put-coercion 'complex 'complex complex->complex)
 
+(mul (make-complex-from-real-imag 3 4) (make-complex-from-real-imag 5 7))
 (exp (make-complex-from-real-imag 3 4) (make-complex-from-real-imag 5 7))
