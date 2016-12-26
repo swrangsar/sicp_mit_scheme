@@ -26,6 +26,8 @@
        (lambda (x) (= x 0)))
   (put 'make 'scheme-number
        (lambda (x) (tag x)))
+  (put 'exp '(scheme-number scheme-number)
+       (lambda (x y) (tag (expt x y))))
   'done)
 
 (define (make-scheme-number n)
