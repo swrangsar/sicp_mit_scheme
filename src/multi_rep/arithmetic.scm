@@ -102,7 +102,7 @@
          (= (real-part z1) (real-part z2))
          (= (imag-part z1) (imag-part z2))))
   (define (=zero? z)
-    (or (= (magnitude z) 0)))
+    (= 0 (magnitude z)))
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
   (put 'add '(complex complex)
