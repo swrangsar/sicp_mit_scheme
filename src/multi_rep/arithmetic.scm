@@ -8,6 +8,7 @@
 (define (div x y) (apply-generic 'div x y))
 (define (equ? x y) (apply-generic 'equ? x y))
 (define (=zero? x) (apply-generic '=zero? x))
+(define (raise x) (apply-generic 'raise x))
 
 
 (define (install-scheme-number-package)
@@ -28,6 +29,9 @@
        (lambda (x) (tag x)))
   (put 'exp '(scheme-number scheme-number)
        (lambda (x y) (tag (expt x y))))
+  (put 'raise '(scheme-number)
+       (lambda (x)
+         ((get 'make 'rational) x 1)))
   'done)
 
 (define (make-scheme-number n)
@@ -73,11 +77,26 @@
   (put '=zero? '(rational) =zero?-rat)
   (put 'make 'rational
        (lambda (n d) (tag (make-rat n d))))
+  (put 'raise '(rational)
+       (lambda (r)
+           ((get 'make 'real) (/ (numer r) (denom r)))))
   'done)
+
 
 (define (make-rational n d)
   ((get 'make 'rational) n d))
 
+(define (make-real r)
+  ((get 'make 'real) r))
+
+(define (install-real-package)
+  (define (tag r) (attach-tag 'real r))
+  (put 'make 'real
+       (lambda (r) (tag r)))
+  (put 'raise '(real)
+       (lambda (r)
+         ((get 'make-from-real-imag 'complex) r 0)))
+  'done)
 
 (define (install-complex-package)
   ;; imported procedures from rectangular and polar packages
@@ -134,7 +153,7 @@
 
 
 (define (attach-tag type-tag contents)
-  (cond ((number? contents) contents)
+  (cond ((eq? type-tag 'scheme-number) contents)
         (else (cons type-tag contents))))
 
 (define (type-tag datum)
