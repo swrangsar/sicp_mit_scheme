@@ -15,6 +15,7 @@
 (define (arctan x y) (apply-generic 'arctan x y))
 (define (square x) (mul x x))
 (define (square_root x) (apply-generic 'square_root x))
+(define (neg x) (apply-generic 'neg x))
 
 
 (define (install-scheme-number-package)
@@ -47,12 +48,20 @@
        (lambda (x y) (atan x y)))
   (put 'square_root '(scheme-number)
        (lambda (x) (sqrt x)))
+  (put 'neg '(scheme-number)
+       (lambda (x) (- x)))
   'done)
 
 (define (make-scheme-number n)
   ((get 'make 'scheme-number) n))
 
 (define (install-integer-package)
+  ;; internal procedures
+  (define (make-int x)
+    (round x))
+  (define (neg-int x)
+    (- x))
+  ;; interface to the rest of the system
   (define (tag x)
     (attach-tag 'integer x))
   (put 'add '(integer integer)
@@ -68,7 +77,7 @@
   (put '=zero? '(integer)
        (lambda (x) (= x 0)))
   (put 'make 'integer
-       (lambda (x) (tag (round x))))
+       (lambda (x) (tag (make-int x))))
   (put 'exp '(integer integer)
        (lambda (x y) (tag (expt x y))))
   (put 'raise '(integer)
@@ -82,6 +91,8 @@
        (lambda (x y) (atan x y)))
   (put 'square_root '(integer)
        (lambda (x) (sqrt x)))
+  (put 'neg '(integer)
+       (lambda (x) (tag (neg-int x))))
   'done)
 
 (define (make-integer n)
@@ -121,6 +132,8 @@
       (atan a b)))
   (define (square_root x)
     (sqrt (/ (numer x) (denom x))))
+  (define (neg-rat q)
+    (make-rat (- (numer q)) (denom q)))
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
   (put 'add '(rational rational)
@@ -145,16 +158,19 @@
        (lambda (r) (cos (/ (numer r) (denom r)))))
   (put 'arctan '(rational rational) arctan)
   (put 'square_root '(rational) square_root)
+  (put 'neg '(rational)
+       (lambda (q) (tag (neg-rat q))))
   'done)
 
 
 (define (make-rational n d)
   ((get 'make 'rational) n d))
-
 (define (make-real r)
   ((get 'make 'real) r))
 
+
 (define (install-real-package)
+  ;; internal procedures
   (define (get-multiplier r)
     (define (calc-multiplier x result)
       (cond ((integer? x) result)
@@ -165,9 +181,11 @@
     (let ((denom (get-multiplier r)))
       (let ((numer (round (* r denom))))
         ((get 'make 'rational) numer denom))))
-  (define (tag r) (attach-tag 'real r))
   (define (div x y) (/ x y))
-  ;; exported procedures
+  (define (neg-real x)
+    (- x))
+  ;; interface to the rest of the system
+  (define (tag r) (attach-tag 'real r))
   (put 'mul '(real real)
        (lambda (x y) (tag (* x y))))
   (put 'div '(real real)
@@ -195,6 +213,8 @@
        (lambda (x y) (atan x y)))
   (put 'square_root '(real)
        (lambda (r) (sqrt r)))
+  (put 'neg '(real)
+       (lambda (r) (tag (neg-real r))))
   'done)
 
 (define (install-complex-package)
@@ -225,6 +245,9 @@
     (=zero? (magnitude z)))
   (define (project z)
     ((get 'make 'real) (real-part z)))
+  (define (neg-complex z)
+    (sub-complex (make-from-real-imag 0 0)
+                 z))
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
   (put 'add '(complex complex)
@@ -246,6 +269,8 @@
   (put 'magnitude '(complex) magnitude)
   (put 'angle '(complex) angle)
   (put 'project '(complex) project)
+  (put 'neg '(complex)
+       (lambda (z) (tag (neg-complex z))))
   'done)
 
 (define (make-complex-from-real-imag x y)
