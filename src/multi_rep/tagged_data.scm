@@ -151,7 +151,7 @@
         (let ((projecter (get 'project (list type))))
           (if (not projecter)
               x
-              (let ((projection (project x)))
+              (let ((projection (projecter (contents x))))
               (if (equ? x (raise projection))
                   (drop projection)
                   x)))))
