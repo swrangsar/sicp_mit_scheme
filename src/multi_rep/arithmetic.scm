@@ -1,7 +1,6 @@
 (load "multi_rep/table_2d")
 (load "multi_rep/data_directed")
 
-
 (define (add x y) (apply-generic 'add x y))
 (define (sub x y) (apply-generic 'sub x y))
 (define (mul x y) (apply-generic 'mul x y))
@@ -150,18 +149,3 @@
   ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a)
   ((get 'make-from-mag-ang 'complex) r a))
-
-
-(define (attach-tag type-tag contents)
-  (cond ((eq? type-tag 'scheme-number) contents)
-        (else (cons type-tag contents))))
-
-(define (type-tag datum)
-  (cond ((pair? datum) (car datum))
-        ((number? datum) 'scheme-number)
-        (error "Bad tagged datum -- TYPE-TAG" datum)))
-
-(define (contents datum)
-  (cond ((pair? datum) (cdr datum))
-        ((number? datum) datum)
-        (error "Bad tagged datum -- CONTENTS" datum)))
