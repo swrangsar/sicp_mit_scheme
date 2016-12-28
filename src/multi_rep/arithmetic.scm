@@ -199,11 +199,13 @@
   ((get 'make-from-mag-ang 'complex) r a))
 
 (define (drop x)
-  (let ((type (type-tag x)))
-    (let ((projecter (get 'project (list type))))
-      (if (not projecter)
-          x
-          (let ((projection (project x)))
-            (if (equ? x (raise projection))
-                (drop projection)
-                x))))))
+  (if (pair? x)
+      (let ((type (type-tag x)))
+        (let ((projecter (get 'project (list type))))
+          (if (not projecter)
+              x
+              (let ((projection (project x)))
+              (if (equ? x (raise projection))
+                  (drop projection)
+                  x)))))
+      x))
