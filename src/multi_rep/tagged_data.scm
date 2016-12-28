@@ -143,3 +143,16 @@
                   (apply apply-generic op (get-raised-args args)))
               (error "No method for these types"
                      (list op type-tags)))))))
+
+
+(define (drop x)
+  (if (pair? x)
+      (let ((type (type-tag x)))
+        (let ((projecter (get 'project (list type))))
+          (if (not projecter)
+              x
+              (let ((projection (project x)))
+              (if (equ? x (raise projection))
+                  (drop projection)
+                  x)))))
+      x))
