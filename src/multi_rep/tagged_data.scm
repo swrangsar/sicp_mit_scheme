@@ -156,3 +156,15 @@
                   (drop projection)
                   x)))))
       x))
+
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (drop (apply proc (map contents args)))
+          (if (> (length args) 1)
+              (if (is-all-same-type type-tags)
+                  (error "No method for these type" (list op type-tags))
+                  (drop (apply apply-generic op (get-raised-args args))))
+              (error "No method for these types"
+                     (list op type-tags)))))))
