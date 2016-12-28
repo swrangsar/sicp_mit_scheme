@@ -12,7 +12,6 @@
 (add (make-scheme-number 3) (make-scheme-number 7))
 (div (make-rational 3 7) (make-rational 21 9))
 
-(mul (make-complex-from-mag-ang 3 1.57) (make-complex-from-mag-ang 5 1.57))
 (magnitude (make-complex-from-real-imag 3 4))
 (equ? (make-complex-from-mag-ang 3 1.57)
       (make-complex-from-mag-ang 3 1.57))
@@ -50,6 +49,10 @@
 (drop (make-rational 30 10))
 (drop (make-rational 33 3))
 
+(mul (make-complex-from-real-imag (make-rational 22 7) (make-rational 13 5)) (make-complex-from-real-imag (make-integer 5) (make-integer 0)))
 (mul (make-complex-from-mag-ang 3 0) (make-complex-from-mag-ang 5 0))
 (mul (make-complex-from-mag-ang 3.1 0) (make-complex-from-mag-ang 5 0))
 (mul (make-rational 22 7) (make-complex-from-mag-ang 5 0))
+(mul (make-complex-from-real-imag (make-rational 22 7) (make-real 25.917)) (make-complex-from-real-imag 5 0))
+
+(mul (make-complex-from-mag-ang 3 1.57) (make-complex-from-mag-ang 5 1.57))
