@@ -72,6 +72,38 @@
                       (mul (coeff t1) (coeff t2)))
            (mul-term-by-all-terms t1 (rest-terms L))))))
 
+  (define (sub-poly p1 p2)
+    (if (same-variable? (variable p1) (variable p2))
+        (make-poly (variable p1)
+                   (sub-terms (term-list p1)
+                              (term-list p2)))
+        (error "Polys not in same var -- SUB-POLY"
+               (list p1 p2))))
+  (define (sub-terms L1 L2)
+    (cond ((empty-termlist? L2) L1)
+          ((empty-termlist? L1)
+           (let ((t (first-term L2)))
+             (adjoin-term
+              (make-term (order t)
+                         (negate (coeff t)))
+              (sub-terms L1 (rest-terms L2)))))
+          (else
+            (let ((t1 (first-term L1))
+                  (t2 (first-term L2)))
+              (cond ((> (order t1) (order t2))
+                     (adjoin-term
+                      t1 (sub-terms (rest-terms L1) L2)))
+                    ((< (order t1) (order t2))
+                     (adjoin-term
+                      (make-term (order t2)
+                                 (negate (coeff t2)))
+                      (sub-terms L1 (rest-terms L2))))
+                    (else
+                     (adjoin-term
+                      (make-term (order t1)
+                                 (sub (coeff t1) (coeff t2)))
+                      (sub-terms (rest-terms L1)
+                                 (rest-terms L2)))))))))
   ;;interface to the rest of the system
   (define (tag p) (attach-tag 'polynomial p))
   (put 'add '(polynomial polynomial)
