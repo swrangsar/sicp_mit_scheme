@@ -28,4 +28,12 @@
 (raise (make-rational 5 1))
 (raise (make-rational 3 7))
 (raise (make-real 3.14))
+
+(mul (make-rational 22 7) (make-complex-from-mag-ang 5 1.57))
+(mul 3 (make-complex-from-mag-ang 5 1.57))
+(div 3 (make-complex-from-mag-ang 5 1.57))
+(add 3 (make-complex-from-mag-ang 5 1.57))
+(add 3 (make-rational 22 7))
+
+
 (raise (make-complex-from-mag-ang 5 3.14))
