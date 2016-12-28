@@ -97,10 +97,49 @@
               (transform datum)
               (error "no coercion for" src_type "to" dest_type))))))
 
-
 (define (is-all-same-type type-tags)
   (define (comp-types types)
     (cond ((null? types) true)
           ((eq? (car types) (car type-tags)) (comp-types (cdr types)))
           (else false)))
   (comp-types (cdr type-tags)))
+
+
+(define (try-raising-to arg target-type)
+  (let ((type (type-tag arg)))
+    (if (eq? type target-type)
+        arg
+        (let ((raiser (get 'raise (list type))))
+          (if (not raiser)
+              false
+              (try-raising-to (raiser (contents arg)) target-type))))))
+
+
+(define (get-raised-args args)
+  (define (raise-sublist head tail)
+    (if (null? tail)
+        (error "null tail for raise-sublist")
+        (let ((next-head (car tail)))
+          (if (eq? (type-tag head) (type-tag next-head))
+              (cons head (raise-sublist next-head (cdr tail)))
+              (let ((new-arg1 (try-raising-to head (type-tag next-head))))
+                   (if new-arg1
+                       (cons new-arg1 tail)
+                       (let ((new-arg2 (try-raising-to next-head (type-tag head))))
+                            (if new-arg2
+                                (cons head (cons new-arg2 (cdr tail)))
+                                (error "could not coerce args" head next-head)))))))))
+  (raise-sublist (car args) (cdr args)))
+
+
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (if (> (length args) 1)
+              (if (is-all-same-type type-tags)
+                  (error "No method for these type" (list op type-tags))
+                  (apply apply-generic op (get-raised-args args)))
+              (error "No method for these types"
+                     (list op type-tags)))))))
