@@ -48,11 +48,12 @@
        (lambda (x y) (tag (* x y))))
   (put 'div '(integer integer)
        (lambda (x y) (tag (/ x y))))
-  (put 'equ? '(integer integer) =)
+  (put 'equ? '(integer integer)
+       (lambda (x y) (= x y)))
   (put '=zero? '(integer)
        (lambda (x) (= x 0)))
   (put 'make 'integer
-       (lambda (x) (tag x)))
+       (lambda (x) (tag (round x))))
   (put 'exp '(integer integer)
        (lambda (x y) (tag (expt x y))))
   (put 'raise '(integer)
@@ -127,15 +128,17 @@
     (calc-multiplier r 1))
   (define (project r)
     (let ((denom (get-multiplier r)))
-      (let ((numer (* r denom)))
+      (let ((numer (round (* r denom))))
         ((get 'make 'rational) numer denom))))
-           
   (define (tag r) (attach-tag 'real r))
+  ;; exported procedures
   (put 'make 'real
        (lambda (r) (tag r)))
   (put 'raise '(real)
        (lambda (r)
          ((get 'make-from-real-imag 'complex) r 0)))
+  (put 'equ? '(real real)
+       (lambda (r1 r2) (= r1 r2)))
   (put 'project '(real) project)
   'done)
 
@@ -194,3 +197,13 @@
   ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a)
   ((get 'make-from-mag-ang 'complex) r a))
+
+(define (drop x)
+  (let ((type (type-tag x)))
+    (let ((projecter (get 'project (list type))))
+      (if (not projecter)
+          x
+          (let ((projection (project x)))
+            (if (equ? x (raise projection))
+                (drop projection)
+                x))))))

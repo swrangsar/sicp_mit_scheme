@@ -10,6 +10,7 @@
 (install-rectangular-package)
 (install-polar-package)
 (install-complex-package)
+(install-integer-package)
 
 (mul (make-complex-from-mag-ang 3 1.57) (make-complex-from-mag-ang 5 1.57))
 (magnitude (make-complex-from-real-imag 3 4))
@@ -35,5 +36,16 @@
 (add 3 (make-complex-from-mag-ang 5 1.57))
 (add 3 (make-rational 22 7))
 
+;;; (raise (make-complex-from-mag-ang 5 3.14))
+(project (make-complex-from-mag-ang 5 3.14))
 
-(raise (make-complex-from-mag-ang 5 3.14))
+(project (make-complex-from-real-imag 15 2.5))
+(project (make-real 2.5))
+(project (make-rational 22 7))
+(drop (make-complex-from-real-imag 3 0))
+(drop (make-complex-from-real-imag 3 1))
+(drop (make-complex-from-real-imag 3.15 0))
+(drop (make-real 3.151))
+(drop (make-rational 22 7))
+(drop (make-rational 30 10))
+(drop (make-rational 33 3))
