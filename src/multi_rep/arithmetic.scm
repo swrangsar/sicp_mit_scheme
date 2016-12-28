@@ -12,6 +12,9 @@
 (define (project x) (apply-generic 'project x))
 (define (sine x) (apply-generic 'sine x))
 (define (cosine x) (apply-generic 'cosine x))
+(define (arctan x y) (apply-generic 'arctan x y))
+(define (square x) (mul x x))
+(define (square_root x) (apply-generic 'square_root x))
 
 
 (define (install-scheme-number-package)
@@ -40,6 +43,10 @@
        (lambda (x) (sin x)))
   (put 'cosine '(scheme-number)
        (lambda (x) (cos x)))
+  (put 'arctan '(scheme-number scheme-number)
+       (lambda (x y) (atan x y)))
+  (put 'square_root '(scheme-number)
+       (lambda (x) (sqrt x)))
   'done)
 
 (define (make-scheme-number n)
@@ -71,6 +78,10 @@
        (lambda (x) (sin x)))
   (put 'cosine '(integer)
        (lambda (x) (cos x)))
+  (put 'arctan '(integer integer)
+       (lambda (x y) (atan x y)))
+  (put 'square_root '(integer)
+       (lambda (x) (sqrt x)))
   'done)
 
 (define (make-integer n)
@@ -104,6 +115,12 @@
     (and (= (numer x) 0)))
   (define (project x)
     ((get 'make 'integer) (round (/ (numer x) (denom x)))))
+  (define (arctan x y)
+    (let ((a (/ (numer x) (denom x)))
+          (b (/ (numer y) (denom y))))
+      (atan a b)))
+  (define (square_root x)
+    (sqrt (/ (numer x) (denom x))))
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
   (put 'add '(rational rational)
@@ -126,6 +143,8 @@
        (lambda (r) (sin (/ (numer r) (denom r)))))
   (put 'cosine '(rational)
        (lambda (r) (cos (/ (numer r) (denom r)))))
+  (put 'arctan '(rational rational) arctan)
+  (put 'square_root '(rational) square_root)
   'done)
 
 
@@ -172,6 +191,10 @@
        (lambda (r) (sin r)))
   (put 'cosine '(real)
        (lambda (r) (cos r)))
+  (put 'arctan '(real real)
+       (lambda (x y) (atan x y)))
+  (put 'square_root '(real)
+       (lambda (r) (sqrt r)))
   'done)
 
 (define (install-complex-package)
