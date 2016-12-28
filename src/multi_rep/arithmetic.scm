@@ -8,6 +8,7 @@
 (define (equ? x y) (apply-generic 'equ? x y))
 (define (=zero? x) (apply-generic '=zero? x))
 (define (raise x) (apply-generic 'raise x))
+(define (project x) (apply-generic 'project x))
 
 
 (define (install-scheme-number-package)
@@ -59,6 +60,9 @@
          ((get 'make 'rational) x 1)))
   'done)
 
+(define (make-integer n)
+  ((get 'make 'integer) n))
+
 (define (install-rational-package)
   ;; internal procedures
   (define (numer x) (car x))
@@ -86,7 +90,7 @@
   (define (=zero? x)
     (and (= (numer x) 0)))
   (define (project x)
-    (round (/ (numer x) (denom x))))
+    ((get 'make 'integer) (round (/ (numer x) (denom x)))))
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
   (put 'add '(rational rational)
@@ -115,12 +119,24 @@
   ((get 'make 'real) r))
 
 (define (install-real-package)
+  (define (get-multiplier r)
+    (define (calc-multiplier x result)
+      (cond ((integer? x) result)
+            ((> result 1e9) result)
+            (else (calc-multiplier (* 10 x) (* 10 result)))))
+    (calc-multiplier r 1))
+  (define (project r)
+    (let ((denom (get-multiplier r)))
+      (let ((numer (* r denom)))
+        ((get 'make 'rational) numer denom))))
+           
   (define (tag r) (attach-tag 'real r))
   (put 'make 'real
        (lambda (r) (tag r)))
   (put 'raise '(real)
        (lambda (r)
          ((get 'make-from-real-imag 'complex) r 0)))
+  (put 'project '(real) project)
   'done)
 
 (define (install-complex-package)
