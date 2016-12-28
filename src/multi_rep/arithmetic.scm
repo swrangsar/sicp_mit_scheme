@@ -131,6 +131,7 @@
       (let ((numer (round (* r denom))))
         ((get 'make 'rational) numer denom))))
   (define (tag r) (attach-tag 'real r))
+  (define (div x y) (/ x y))
   ;; exported procedures
   (put 'make 'real
        (lambda (r) (tag r)))
@@ -139,6 +140,7 @@
          ((get 'make-from-real-imag 'complex) r 0)))
   (put 'equ? '(real real)
        (lambda (r1 r2) (= r1 r2)))
+  (put 'div '(real real) div)
   (put 'project '(real) project)
   'done)
 

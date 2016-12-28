@@ -1,16 +1,16 @@
 (load "multi_rep/arithmetic")
 
 (install-scheme-number-package)
-(add (make-scheme-number 3) (make-scheme-number 7))
-
 (install-rational-package)
-(div (make-rational 3 7) (make-rational 21 9))
-
 (install-real-package)
 (install-rectangular-package)
 (install-polar-package)
 (install-complex-package)
 (install-integer-package)
+
+
+(add (make-scheme-number 3) (make-scheme-number 7))
+(div (make-rational 3 7) (make-rational 21 9))
 
 (mul (make-complex-from-mag-ang 3 1.57) (make-complex-from-mag-ang 5 1.57))
 (magnitude (make-complex-from-real-imag 3 4))
@@ -49,3 +49,7 @@
 (drop (make-rational 22 7))
 (drop (make-rational 30 10))
 (drop (make-rational 33 3))
+
+(mul (make-complex-from-mag-ang 3 0) (make-complex-from-mag-ang 5 0))
+(mul (make-complex-from-mag-ang 3.1 0) (make-complex-from-mag-ang 5 0))
+(mul (make-rational 22 7) (make-complex-from-mag-ang 5 0))
