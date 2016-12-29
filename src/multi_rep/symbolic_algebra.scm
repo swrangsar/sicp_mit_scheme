@@ -62,7 +62,7 @@
     (if (empty-termlist? L1)
         (the-empty-termlist)
         (add-terms (mul-term-by-all-terms (first-term L1) L2)
-                   (mul-terms (rest-term L1) L2))))
+                   (mul-terms (rest-terms L1) L2))))
   (define (mul-term-by-all-terms t1 L)
     (if (empty-termlist? L)
         (the-empty-termlist)
@@ -85,7 +85,7 @@
            (let ((t (first-term L2)))
              (adjoin-term
               (make-term (order t)
-                         (negate (coeff t)))
+                         (neg (coeff t)))
               (sub-terms L1 (rest-terms L2)))))
           (else
             (let ((t1 (first-term L1))
@@ -96,7 +96,7 @@
                     ((< (order t1) (order t2))
                      (adjoin-term
                       (make-term (order t2)
-                                 (negate (coeff t2)))
+                                 (neg (coeff t2)))
                       (sub-terms L1 (rest-terms L2))))
                     (else
                      (adjoin-term
@@ -112,6 +112,8 @@
        (lambda (p1 p2) (tag (mul-poly p1 p2))))
   (put 'make 'polynomial
        (lambda (var terms) (tag (make-poly var terms))))
+  (put 'sub '(polynomial polynomial)
+       (lambda (p1 p2) (tag (sub-poly p1 p2))))
   (put '=zero? '(polynomial)
        (lambda (p) (empty-termlist? (term-list p))))
   'done)
