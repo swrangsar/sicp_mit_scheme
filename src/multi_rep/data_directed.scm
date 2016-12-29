@@ -1,5 +1,3 @@
-(load "multi_rep/tagged_data")
-
 (define (install-rectangular-package)
   ;; internal procedures
   (define (real-part z) (car z))

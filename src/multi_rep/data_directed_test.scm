@@ -1,6 +1,6 @@
 (load "symbolic_data/symbolic_data")
-(load "multi_rep/data_directed")
 (load "multi_rep/table_2d")
+(load "multi_rep/data_directed")
 
 
 (define (deriv exp var)
