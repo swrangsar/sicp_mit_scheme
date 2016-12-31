@@ -33,3 +33,10 @@
 (sub dense-poly-b poly-a)
 (mul dense-poly-b poly-a)
 (mul poly-b dense-poly-a)
+(div (make-polynomial-sparse 'x '((5 1) (0 -1)))
+     (make-polynomial-sparse 'x '((2 1) (0 -1))))
+(div (make-polynomial-dense 'x '(1 0 0 0 0 -1))
+     (make-polynomial-dense 'x '(1 0 -1)))
+
+(div (make-polynomial-dense 'x '(1 0 0 0 0 -1))
+     (make-polynomial-sparse 'x '((2 1) (0 -1))))

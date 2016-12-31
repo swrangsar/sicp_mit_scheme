@@ -70,6 +70,24 @@
            (make-term (+ (order t1) (order t2))
                       (mul (coeff t1) (coeff t2)))
            (mul-term-by-all-terms t1 (rest-terms L))))))
+  (define (div-terms L1 L2)
+    (if (empty-termlist? L1)
+        (list (the-empty-termlist) (the-empty-termlist))
+        (let ((t1 (first-term L1))
+              (t2 (first-term L2)))
+          (if (> (order t2) (order t1))
+              (list (the-empty-termlist) L1)
+              (let ((new-c (div (coeff t1) (coeff t2)))
+                    (new-o (- (order t1) (order t2))))
+                (let ((rest-of-result
+                       (div-terms 
+                        (sub-terms L1
+                                   (mul-term-by-all-terms
+                                    (make-term new-o new-c) L2))
+                        L2)))
+                  (list (adjoin-term (make-term new-o new-c)
+                              (car rest-of-result))
+                        (cadr rest-of-result))))))))
   ;;interface to the rest of the system
   (define (tag l) (attach-tag 'sparse-termlist l))
   (put 'adjoin-term 'sparse-termlist
@@ -84,4 +102,9 @@
        (lambda (L1 L2) (tag (sub-terms L1 L2))))
   (put 'mul '(sparse-termlist sparse-termlist)
        (lambda (L1 L2) (tag (mul-terms L1 L2))))
+  (put 'div '(sparse-termlist sparse-termlist)
+       (lambda (L1 L2)
+         (let ((result (div-terms L1 L2)))
+           (list (tag (car result))
+                 (tag (cadr result))))))
   'done)

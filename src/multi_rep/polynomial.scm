@@ -16,22 +16,32 @@
     (if (same-variable? (variable p1) (variable p2))
         (make-poly (variable p1)
                    (add (term-list p1)
-                              (term-list p2)))
+                        (term-list p2)))
         (error "Polys not in same var -- ADD-POLY"
                (list p1 p2))))
   (define (mul-poly p1 p2)
     (if (same-variable? (variable p1) (variable p2))
         (make-poly (variable p1)
                    (mul (term-list p1)
-                              (term-list p2)))
+                        (term-list p2)))
         (error "Polys not in same var -- MUL-POLY"
                (list p1 p2))))
   (define (sub-poly p1 p2)
     (if (same-variable? (variable p1) (variable p2))
         (make-poly (variable p1)
                    (sub (term-list p1)
-                              (term-list p2)))
+                        (term-list p2)))
         (error "Polys not in same var -- SUB-POLY"
+               (list p1 p2))))
+  (define (div-poly p1 p2)
+    (if (same-variable? (variable p1) (variable p2))
+        (let ((result (div (term-list p1)
+                           (term-list p2))))
+          (list (make-poly (variable p1)
+                           (car result))
+                (make-poly (variable p1)
+                           (cadr result))))
+        (error "Polys not in same var --DIV-POLY"
                (list p1 p2))))
   ;;interface to the rest of the system
   (define (tag p) (attach-tag 'polynomial p))
@@ -45,6 +55,11 @@
        (lambda (p1 p2) (tag (sub-poly p1 p2))))
   (put '=zero? '(polynomial)
        (lambda (p) (empty-termlist? (term-list p))))
+  (put 'div '(polynomial polynomial)
+       (lambda (p1 p2)
+         (let ((result (div-poly p1 p2)))
+           (list (tag (car result))
+                 (tag (cadr result))))))
   'done)
 
 
