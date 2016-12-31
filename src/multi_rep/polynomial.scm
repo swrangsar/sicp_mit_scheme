@@ -10,6 +10,10 @@
 (define (the-empty-termlist)
   ((get 'the-empty-termlist 'sparse-termlist)))
 
+(define (first-term term-list) (apply-generic 'first-term term-list))
+(define (rest-terms term-list) (apply-generic 'rest-terms term-list))
+(define (empty-termlist? term-list) (apply-generic 'empty-termlist? term-list))
+
 
 (define (install-polynomial-package)
   ;; internal procedures
@@ -22,9 +26,6 @@
   (define (same-variable? v1 v2)
     (and (variable? v1) (variable? v2) (eq? v1 v2)))
   ;; representation of terms and term lists
-  (define (first-term term-list) (apply-generic 'first-term term-list))
-  (define (rest-terms term-list) (apply-generic 'rest-terms term-list))
-  (define (empty-termlist? term-list) (apply-generic 'empty-termlist? term-list))
   (define (make-term order coeff) (list order coeff))
   (define (order term) (car term))
   (define (coeff term) (cadr term))
@@ -123,5 +124,12 @@
   'done)
 
 
-(define (make-polynomial var terms)
-  ((get 'make 'polynomial) var terms))
+(define (make-polynomial-sparse var terms)
+  ((get 'make 'polynomial)
+   var
+   ((get 'make 'sparse-termlist) terms)))
+
+(define (make-polynomial-dense var terms)
+  ((get 'make 'polynomial)
+   var
+   ((get 'make 'dense-termlist) terms)))

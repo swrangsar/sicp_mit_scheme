@@ -2,10 +2,14 @@
 (load "multi_rep/tagged_data")
 (load "multi_rep/data_directed")
 (load "multi_rep/arithmetic")
-(load "multi_rep/symbolic_algebra")
+(load "multi_rep/polynomial")
+(load "multi_rep/sparse_term_list")
+(load "multi_rep/dense_term_list")
 
 
 (install-scheme-number-package)
+(install-sparse-terms-package)
+(install-dense-terms-package)
 (install-polynomial-package)
 
 
