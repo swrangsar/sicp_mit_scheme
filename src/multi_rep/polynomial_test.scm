@@ -25,4 +25,11 @@
 
 (add dense-poly-a dense-poly-b)
 (sub dense-poly-b dense-poly-a)
-;;(mul dense-poly-a dense-poly-b)
+(mul dense-poly-a dense-poly-b)
+
+(add poly-a dense-poly-b)
+(add dense-poly-b poly-a)
+(sub poly-b dense-poly-a)
+(add dense-poly-a poly-b)
+(add poly-b dense-poly-a)
+(sub dense-poly-b poly-a)
