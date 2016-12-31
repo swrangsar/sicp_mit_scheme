@@ -8,16 +8,8 @@
   (define (coeff term) (cadr term))
   (define (the-empty-termlist) '())
   (define (first-term term-list)
-    (let ((num-terms (length term-list)))
-      (cond ((= num-terms 1)
-             (make-term 0 (car term-list)))
-            ((> num-terms 1)
-             (if (= (car term-list) 0)
-                 (first-term (cdr term-list))
-                 (make-term (+ num-terms -1)
-                            (car term-list))))
-            (else
-             (error "empty term-list -- FIRST-TERM DENSE")))))
+    (make-term (+ (length term-list) -1)
+               (car term-list)))
   (define (rest-terms term-list) (cdr term-list))
   (define (empty-termlist? term-list) (null? term-list))
   (define (adjoin-term term term-list)
@@ -27,7 +19,7 @@
           (cond ((< len (order term))
                  (adjoin-term term (cons 0 term-list)))
                 ((> len (order term))
-                 (error "adjoin term to terms" term))
+                 (error "adjoin term to terms" term term-list))
                 (else
                  (cons (coeff term) term-list))))))
   ;; interface to the rest of the system
