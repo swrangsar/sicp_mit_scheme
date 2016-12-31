@@ -14,7 +14,6 @@
   (define (make-term order coeff) (list order coeff))
   (define (order term) (car term))
   (define (coeff term) (cadr term))
-
   ;;interface to the rest of the system
   (define (tag l) (attach-tag 'sparse-termlist l))
   (put 'first-term '(sparse-termlist)
