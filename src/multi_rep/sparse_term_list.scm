@@ -25,6 +25,6 @@
        (lambda (t l) (tag (adjoin-term t l))))
   (put 'empty-termlist? '(sparse-termlist)
        (lambda (l) (empty-termlist? l)))
-  (put 'the-empty-termlist '(sparse-termlist)
+  (put 'the-empty-termlist 'sparse-termlist
        (lambda () (tag (the-empty-termlist))))
   'done)
