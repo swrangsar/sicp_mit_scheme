@@ -15,18 +15,15 @@
 
 (define poly-a (make-polynomial-sparse 'x '((5 1) (4 2) (2 3) (1 -2) (0 -5))))
 (define poly-b (make-polynomial-sparse 'x '((100 1) (2 2) (0 1))))
+(define dense-poly-a (make-polynomial-dense 'x '(1 2 0 3 -2 -5)))
+(define dense-poly-b (make-polynomial-dense 'x '(5 0 4 -1 35)))
 
 (add poly-a poly-b)
 (sub poly-b poly-a)
 (mul poly-a poly-b)
-
-(define dense-poly-a (make-polynomial-dense 'x '(1 2 0 3 -2 -5)))
-(define dense-poly-b (make-polynomial-dense 'x '(5 0 4 -1 35)))
-
 (add dense-poly-a dense-poly-b)
 (sub dense-poly-b dense-poly-a)
 (mul dense-poly-a dense-poly-b)
-
 
 (add poly-a dense-poly-b)
 (add dense-poly-b poly-a)
@@ -34,3 +31,5 @@
 (add dense-poly-a poly-b)
 (add poly-b dense-poly-a)
 (sub dense-poly-b poly-a)
+(mul dense-poly-b poly-a)
+(mul poly-b dense-poly-a)
