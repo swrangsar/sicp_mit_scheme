@@ -27,4 +27,6 @@
        (lambda (l) (empty-termlist? l)))
   (put 'the-empty-termlist 'sparse-termlist
        (lambda () (tag (the-empty-termlist))))
+  (put 'make 'sparse-termlist
+       (lambda (l) (tag l)))
   'done)

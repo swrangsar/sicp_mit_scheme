@@ -8,7 +8,7 @@
    (contents term-list)))
 
 (define (the-empty-termlist)
-  (('get 'the-empty-termlist 'sparse-termlist)))
+  ((get 'the-empty-termlist 'sparse-termlist)))
 
 
 (define (install-polynomial-package)
@@ -22,7 +22,6 @@
   (define (same-variable? v1 v2)
     (and (variable? v1) (variable? v2) (eq? v1 v2)))
   ;; representation of terms and term lists
-  (define (the-empty-termlist) '())
   (define (first-term term-list) (apply-generic 'first-term term-list))
   (define (rest-terms term-list) (apply-generic 'rest-terms term-list))
   (define (empty-termlist? term-list) (apply-generic 'empty-termlist? term-list))

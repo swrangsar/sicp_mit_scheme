@@ -42,10 +42,6 @@
        (lambda (l) (tag (rest-terms l))))
   (put 'adjoin-term 'dense-termlist
        (lambda (t l) (tag (adjoin-term t l))))
+  (put 'make 'dense-termlist
+       (lambda (l) (tag l)))
   'done)
-
-
-(define (adjoin-term term term-list)
-  ((get 'adjoin-term (type-tag term-list))
-   term
-   (contents term-list)))
